@@ -1,0 +1,30 @@
+import java.util.*;
+
+public class caesar {
+
+	public static ArrayList<String> alpha = new ArrayList<String>(Arrays.asList
+			("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"));
+
+	public static void main(String[] args) {
+		Scanner reader = new Scanner(System.in);
+		
+		System.out.print("Enter a message: ");
+		String message = reader.next();
+
+		System.out.print("Enter the number of shifts to the right: ");
+		int shift = reader.nextInt();
+
+		String newM = "";
+		for(int i = 0; i < message.length(); i++){
+			newM += alpha.get((alpha.indexOf(Character.toString(message.charAt(i))) + shift)%26);
+		}
+		System.out.println("ciphertext: " + newM);
+		
+		//decrypt
+		String decipher = "";
+		for(int k = 0; k < newM.length(); k++){
+			decipher += alpha.get((alpha.indexOf(Character.toString(newM.charAt(k))) - shift)%26);
+		}
+		System.out.println("plaintext: " + decipher);
+	}
+
