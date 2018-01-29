@@ -1,0 +1,29 @@
+import java.util.*;
+
+public class monoalpha{
+	
+	public static void main(String[] args) {
+		
+		String str = "abcdefghijklmnopqrstuvwxyz";		
+		
+		Scanner reader = new Scanner(System.in);
+		System.out.println("Enter a message: ");
+		String message = reader.nextLine();
+		System.out.println("Enter the key (cipher alphabet): ");
+		String cipherAlph = reader.nextLine();
+		
+		//encrypt message
+		String ciphertxt = "";
+		for(int i = 0; i < message.length(); i++){
+			ciphertxt += cipherAlph.charAt(str.indexOf(message.charAt(i)));
+		}
+		System.out.println(ciphertxt);
+		
+		//now decipher the message
+		String decipher = "";
+		for(int i = 0; i < ciphertxt.length(); i++){
+			decipher += str.charAt(cipherAlph.indexOf(ciphertxt.charAt(i)));
+		}
+		System.out.print("Deciphered: " + decipher);
+	}
+}
