@@ -1,0 +1,104 @@
+/* 
+ * Example input:
+ * attackpostponeduntiltwoam
+ *	4312567
+*/
+
+import java.util.*;
+public class transpoCipher {
+	
+	public static void main(String[] args) { 
+		Scanner reader = new Scanner(System.in);
+		//use to fill empty spots in last row
+		String alphaL = "abcdefghijklmnopqrstuvwxyz";
+		List<String> alpha = new ArrayList<String>();
+		alpha = Arrays.asList(alphaL);
+
+		//get message
+		System.out.println("Enter the message: ");
+		String str = reader.nextLine();
+		//str.replaceAll("\\s","");
+
+		//get key
+		ArrayList<Integer> key = new ArrayList<Integer>(7);
+		System.out.println("Enter the key: ");
+		char[] tempK = reader.next().toCharArray();
+		for(int t : tempK){
+			key.add(Character.getNumericValue(t));
+		}		
+
+		//print out the key
+		System.out.print("the key is: ");
+		for(int x : key){
+			System.out.print(x + " ");
+		}
+		System.out.println();
+
+		//if not enough letters to fill last row, add in alphabet letters
+		int numRows = str.length() / 7;
+		if(str.length() % 7 > 0){
+			numRows++;
+			for(int i = str.length() % 7; i < 7; i++){
+				str += "x";
+			}
+		}
+
+		//create 2D array to store values from message into rows and columns
+		//then print it out
+		char [][] block = new char[numRows][7];
+		System.out.println("plaintext:");
+		int access = 0;
+		for(int c = 0; c < numRows; c++){
+			for(int r = 0; r < 7; r++){
+				block [c][r] = str.charAt(access);
+				System.out.print(block[c][r] + " ");
+				access++;
+			}
+			System.out.println();
+		}
+
+		//go through the 2D array of plaintext to output the columns by order
+		//of the key
+		System.out.print("ciphertext: ");
+		String ciphertext = "";
+		for(int i = 0; i < key.size(); i++){
+			int column = key.indexOf(i+1);
+			
+			for(int cs = 0; cs < numRows; cs++){
+				for(int rs = 0; rs < 7; rs++){
+					
+					//if at the right index, print out char
+					if(rs == column){
+						ciphertext += (block[cs][rs]);
+					}
+					
+				}
+			}
+		}
+		System.out.println(ciphertext);
+		//now time to decipher: given the key and the ciphertext
+		
+		int counter = 0;
+		String decipher = "";
+		ArrayList<ArrayList<String>> tempR = new ArrayList<ArrayList<String>>();
+
+		while(counter < ciphertext.length()){
+			ArrayList<String> temp = new ArrayList<String>();
+			for(int i = 0; i < 4; i++){
+				temp.add(Character.toString(ciphertext.charAt(counter)));
+				counter++;
+			}
+			tempR.add(temp);
+		}
+			
+		for(int i = 0; i < key.size(); i++){
+			int patt = key.indexOf(i+1);
+			ArrayList<String> temp = tempR.get(i);
+			tempR.set(i, tempR.get(patt));
+			tempR.set(patt, temp);
+			decipher += tempR.get(i);
+		}
+		System.out.print("decryption: " + str);
+	}
+
+}
